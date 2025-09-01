@@ -14,7 +14,7 @@ jobs:
       - name: Clone pycdc
         run: git clone --depth=1 https://github.com/zrax/pycdc
 
-      - name: Compile
+      - name: Compile (Windows)
         run: >
           cd pycdc
           
@@ -29,7 +29,7 @@ jobs:
           -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER
           -DCMAKE_CXX_STANDARD_LIBRARIES="-static-libgcc -static-libstdc++"
           .
-          
+
           make
 
       - name: Set release date & time
@@ -37,13 +37,14 @@ jobs:
           echo "RELEASE_DATE=$(date -u +%d-%b-%Y)" >> ${GITHUB_ENV}
           echo "RELEASE_TIME=$(date -u +%H:%M)" >> ${GITHUB_ENV}
 
-#       - name: Upload artifact
-#         uses: actions/upload-artifact@v3
-#         with:
-#           name: pycdc
-#           path: |
-#             pycdc/pycdc.exe
-#             pycdc/pycdas.exe
+      # 上传 Windows 构建产物
+      - name: Upload artifact (Windows)
+        uses: actions/upload-artifact@v3
+        with:
+          name: pycdc-windows
+          path: |
+            pycdc/pycdc.exe
+            pycdc/pycdas.exe
             
       - name: Create release Windows
         uses: ncipollo/release-action@v1
@@ -56,7 +57,6 @@ jobs:
           allowUpdates: true
           draft: true
 
-
       - name: Setup latest Alpine Linux x86_64
         uses: jirutka/setup-alpine@v1
         with:
@@ -65,7 +65,7 @@ jobs:
             cmake
             python3
         
-      - name: Compile for Linux x86_64       
+      - name: Compile for Linux x86_64
         run: |
           cd pycdc
           git clean -d -f -x
@@ -76,6 +76,14 @@ jobs:
           mv pycdc pycdc.x86_64
           mv pycdas pycdas.x86_64
         shell: alpine.sh {0}
+
+      - name: Upload artifact (Linux x86_64)
+        uses: actions/upload-artifact@v3
+        with:
+          name: pycdc-linux-x86_64
+          path: |
+            pycdc/pycdc.x86_64
+            pycdc/pycdas.x86_64
 
       - name: Create release Linux x86_64
         uses: ncipollo/release-action@v1
@@ -97,7 +105,7 @@ jobs:
             cmake
             python3
 
-      - name: Compile for Linux AArch64       
+      - name: Compile for Linux AArch64
         run: |
           cd pycdc
           git clean -d -f -x
@@ -108,6 +116,14 @@ jobs:
           mv pycdc pycdc.aarch64
           mv pycdas pycdas.aarch64
         shell: alpine.sh {0}        
+
+      - name: Upload artifact (Linux aarch64)
+        uses: actions/upload-artifact@v3
+        with:
+          name: pycdc-linux-aarch64
+          path: |
+            pycdc/pycdc.aarch64
+            pycdc/pycdas.aarch64
 
       - name: Create release Linux aarch64
         uses: ncipollo/release-action@v1
