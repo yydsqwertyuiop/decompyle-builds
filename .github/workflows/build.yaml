@@ -39,7 +39,7 @@ jobs:
 
       # 上传 Windows 构建产物
       - name: Upload artifact (Windows)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pycdc-windows
           path: |
@@ -78,7 +78,7 @@ jobs:
         shell: alpine.sh {0}
 
       - name: Upload artifact (Linux x86_64)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pycdc-linux-x86_64
           path: |
@@ -118,7 +118,7 @@ jobs:
         shell: alpine.sh {0}        
 
       - name: Upload artifact (Linux aarch64)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pycdc-linux-aarch64
           path: |
